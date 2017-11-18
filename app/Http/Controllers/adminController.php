@@ -59,10 +59,16 @@ class adminController extends Controller
         $event = Event::find($id);
         $places = Place::all();
         if($id){
-            $event->load('artists');
-            dd($event);
+            $event->load('artists','place');
+           $event_artists= $event->artists()->get();
+
+           $list=array();
+           foreach ($event_artists as $a){
+               array_push($list,$a->id);
+           }
+
         }
-        return view('Admin.eventForm', compact('event','places','artists'));
+        return view('Admin.eventForm', compact('event','places','artists','list'));
     }
 
     //********************************************AJOUT***************************************************************//
@@ -150,8 +156,9 @@ class adminController extends Controller
         $event->end = $request->input('end');
 
         $pic=$request->file('picture');
-        Storage::disk('upload')->putFile($this::EVENT_PIC_DIR,$pic);
-        $event->picture=$pic;
+        $picture=Storage::disk('upload')->putFile($this::EVENT_PIC_DIR,$pic);
+
+        $event->picture=$picture;
 
         //associate with place
         $event->place()->associate($place);
@@ -160,7 +167,7 @@ class adminController extends Controller
         //Synchronisation avec les IDs d'artistes
         $event->artists()->sync($artists);
 
-        return response()->json($event);
+        return redirect()->route('admin.index');
     }
 
     //********************************************SELECTION***************************************************************//

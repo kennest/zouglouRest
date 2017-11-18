@@ -23,5 +23,8 @@ class Event extends Model
     {
         return $this->belongsTo(\App\Models\Place::class,'place_id');
     }
+    public function getPictureAttribute($value){
+        return $value;
+    }
 
 }

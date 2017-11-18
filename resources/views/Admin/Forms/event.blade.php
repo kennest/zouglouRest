@@ -6,7 +6,7 @@
             <label for="nom">Titre:</label>
             <input type="text" class="form-control" id="nom" placeholder="Nom..." value="{{$event->title}}" name="title">
         </div>
-    <img src="{{env('APP_URL').'/uploads/'.$event->picture}}">
+    <img src="{{env('APP_URL').'/uploads/'.$event->picture}}" height="150" width="150" class="img-thumbnail">
         <div class="form-group">
             <label for="photo">Affiche:</label>
             <input type="file" class="form-control" id="photo" placeholder="Photo..."  name="picture">
@@ -23,7 +23,7 @@
             <label>Artistes:</label>
             <select name="artists[]" class="form-control" multiple="true">
                 @foreach($artists as $a)
-                    <option value="{{$a->id}}">{{$a->name}}</option>
+                    <option value="{{$a->id}}" {{$r = (in_array($a->id,$list)) ? 'selected' : ''}}>{{$a->name}}</option>
                 @endforeach
             </select>
         </div>
@@ -31,7 +31,7 @@
             <label>Espaces:</label>
             <select name="place_id" class="form-control">
                 @foreach($places as $p)
-                    <option value="{{$p->id}}">{{$p->title}}</option>
+                    <option value="{{$p->id}}" {{$r = ($p->id== $event->place_id) ? 'selected' : ''}}>{{$p->title}}</option>
                 @endforeach
             </select>
         </div>
