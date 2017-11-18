@@ -394,16 +394,12 @@ class adminController extends Controller
         return redirect()->route('admin.index');
     }
 
-    public function deleteEvent(Request $request)
+    public function deleteEvent($id)
     {
-        $this->validate($request, [
-            'id' => 'required'
-        ]);
-
-        $id = $request->input('id');
         $events = Event::all();
         $event = $events->find($id);
 
+        $pic=$event->picture;
         $event->load('artists');
         $artists = $event->artists()->get();
 
@@ -411,7 +407,8 @@ class adminController extends Controller
             foreach ($artists as $artist) {
                 $artist->events()->detach();
             }
+            Storage::disk('upload')->delete($pic);
         }
-        return response()->json('Event Deleted');
+        return redirect()->route('admin.index');
     }
 }
