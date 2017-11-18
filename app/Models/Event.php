@@ -17,7 +17,7 @@ class Event extends Model
 
     public function artists()
     {
-        return $this->belongsToMany(\App\Models\Artist::class);
+        return $this->belongsToMany(\App\Models\Artist::class)->withPivot('artist_id');
     }
     public function place()
     {

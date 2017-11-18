@@ -16,15 +16,19 @@ Route::get('/', ['as'=>'admin.index','uses'=>'adminController@index']);
 //ACCES AU FORMULAIRES
 Route::get('/form/artist/{id?}', ['as'=>'form.artist','uses'=>'adminController@artistForm']);
 Route::get('/form/place/{id?}', ['as'=>'form.place','uses'=>'adminController@placeForm']);
+Route::get('/form/event/{id?}', ['as'=>'form.event','uses'=>'adminController@eventForm']);
 
 
 Route::get('/delartist/{id?}', ['as'=>'artist.delete','uses'=>'adminController@deleteArtist']);
-Route::get('/delplace/{id?}', ['as'=>'artist.delete','uses'=>'adminController@deletePlace']);
+Route::get('/delplace/{id?}', ['as'=>'place.delete','uses'=>'adminController@deletePlace']);
+Route::get('/delevent/{id?}', ['as'=>'event.delete','uses'=>'adminController@deleteEvent']);
 
 
 //AJOUT ET MISE A JOUR
 Route::post('/addartist', ['as'=>'artist.add','before' => 'csrf','uses'=>'adminController@addArtist']);
 Route::post('/addplace', ['as'=>'place.add','before' => 'csrf','uses'=>'adminController@addPlace']);
+Route::post('/addevent', ['as'=>'event.add','before' => 'csrf','uses'=>'adminController@addEvent']);
 
 Route::post('/updateartist', ['as'=>'artist.update','before' => 'csrf','uses'=>'adminController@updateArtist']);
 Route::post('/updateplace', ['as'=>'place.update','before' => 'csrf','uses'=>'adminController@updatePlace']);
+Route::post('/updateevent', ['as'=>'event.update','before' => 'csrf','uses'=>'adminController@updateEvent']);

@@ -55,8 +55,14 @@ class adminController extends Controller
 
     public function eventForm($id = null)
     {
+        $artists = Artist::all();
         $event = Event::find($id);
-        return view('Admin.placeForm', compact('event'));
+        $places = Place::all();
+        if($id){
+            $event->load('artists');
+            dd($event);
+        }
+        return view('Admin.eventForm', compact('event','places','artists'));
     }
 
     //********************************************AJOUT***************************************************************//
@@ -85,7 +91,7 @@ class adminController extends Controller
         $artist->avatar = $avatar;
         $artist->urlsample = $sample;
         $artist->save();
-        return response()->json($artist);
+        return redirect()->route('admin.index');
     }
 
     //PERMET D'AJOUTER UN ESPACE
@@ -121,18 +127,18 @@ class adminController extends Controller
         //associate with place
         $address->place()->associate($place);
         $address->save();
-        return response()->json($place);
+        return redirect()->route('admin.index');
     }
 
     //PERMET D'AJOUTER UN EVENEMENT
     public function addEvent(Request $request)
     {
         $this->validate($request, [
-            'place_id' => 'required',
-            'list_artists' => 'required|array'
+            'artists' => 'required|array',
+            'place_id' => 'required|integer'
         ]);
 
-        $list_artists = $request->input('list_artists');
+        $artists = $request->input('artists');
 
         $place = Place::find($request->input('place_id'));
         $event = new Event();
@@ -143,12 +149,16 @@ class adminController extends Controller
         $event->begin = $request->input('begin');
         $event->end = $request->input('end');
 
+        $pic=$request->file('picture');
+        Storage::disk('upload')->putFile($this::EVENT_PIC_DIR,$pic);
+        $event->picture=$pic;
+
         //associate with place
         $event->place()->associate($place);
         $event->save();
 
         //Synchronisation avec les IDs d'artistes
-        $event->artists()->sync($list_artists);
+        $event->artists()->sync($artists);
 
         return response()->json($event);
     }
@@ -234,7 +244,8 @@ class adminController extends Controller
         }
 
         $artist->save();
-        return response()->json($artist);
+
+        return redirect()->route('admin.index');
     }
 
     //PERMET DE MODIFIER UN ESPACE
@@ -252,15 +263,17 @@ class adminController extends Controller
 
         $address = $address->first();
 
-        $place->title = $request->input('place_name');
+        $place->title = $request->input('title');
 
         $oldPic = $place->picture;
 
-        //Picture upload
-        $picture = $request->file('picture');
-        $pic = time() . '.' . $picture->extension();
-        $picture->move(storage_path('/uploads/picture'), $pic);
-        $place->picture = $pic;
+        if($request->file('picture')){
+            //Picture upload
+            $picture = $request->file('picture');
+            $pic=Storage::disk('upload')->putFile($this::PLACE_PIC_DIR,$picture);
+            $place->picture = $pic;
+        }
+
 
         $address->commune = $request->input('commune');
         $address->quartier = $request->input('quartier');
@@ -269,12 +282,12 @@ class adminController extends Controller
 
         //$place->address()->associate($address);
 
-        $fs->delete($oldPic);
+        Storage::disk('upload')->delete($oldPic);
 
         $address->save();
         $place->save();
 
-        return response()->json($place);
+        return redirect()->route('admin.index');
 
     }
 
@@ -339,15 +352,10 @@ class adminController extends Controller
 
     }
 
-    public function deletePlace(Request $request, Filesystem $fs)
+    public function deletePlace($id)
     {
-        $this->validate($request, [
-            'id' => 'required'
-        ]);
-
 
         //Recuperation de l'espace
-        $id = $request->input('id');
         $places = Place::all();
         $place = $places->find($id);
 
@@ -363,11 +371,11 @@ class adminController extends Controller
             foreach ($events as $event) {
                 $event->delete();
             }
-            $fs->delete($picture);
+            Storage::disk('upload')->delete($picture);
         }
 
 
-        return response()->json('Place Deleted');
+        return redirect()->route('admin.index');
     }
 
     public function deleteEvent(Request $request)
