@@ -336,7 +336,7 @@ class adminController extends Controller
 
     //********************************************SUPPRESSION***************************************************************//
 
-    public function deleteArtist($id)
+    public function deleteArtist($id=null)
     {
 
         //On recupere l'artiste et on charge les events
@@ -368,7 +368,7 @@ class adminController extends Controller
 
     }
 
-    public function deletePlace($id)
+    public function deletePlace($id=null)
     {
 
         //Recuperation de l'espace
@@ -394,7 +394,7 @@ class adminController extends Controller
         return redirect()->route('admin.index');
     }
 
-    public function deleteEvent($id)
+    public function deleteEvent($id=null)
     {
         $events = Event::all();
         $event = $events->find($id);
