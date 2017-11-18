@@ -75,14 +75,10 @@ class adminController extends Controller
 
         //Avatar upload
         $picture = $request->file('avatar');
-//        $avatar = time() . '.' . $picture->extension();
-//        $picture->move(public_path($this::AVATAR_DIR), $avatar);
         $avatar=Storage::disk('upload')->putFile($this::AVATAR_DIR,$picture);
 
         //sample upload
         $audio = $request->file('urlSample');
-//        $sample = time() . '.' . $audio->getClientOriginalExtension();
-//        $audio->move(public_path($this::SAMPLES_DIR), $sample);
 
         $sample=Storage::disk('upload')->putFile($this::SAMPLES_DIR,$audio);
 
@@ -110,9 +106,8 @@ class adminController extends Controller
         //Picture upload
         $picture = $request->file('picture');
 
-        $pic = time() . '.' . $picture->extension();
+        $pic=Storage::disk('upload')->putFile($this::PLACE_PIC_DIR,$picture);
 
-        $picture->move(storage_path('/uploads/images/picture'), $pic);
         $place->picture = $pic;
 
         $place->save();

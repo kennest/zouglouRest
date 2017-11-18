@@ -25,6 +25,6 @@ class Place extends Model
     }
 
     public function getPictureAttribute($value){
-        return env('BASE_URL').'/uploads/images/picture/'.$value;
+        return $value;
     }
 }

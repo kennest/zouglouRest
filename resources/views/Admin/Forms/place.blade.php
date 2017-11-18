@@ -4,12 +4,10 @@
         {{ Form::open(['route' => ['place.update'],'files'=>true])}}
         <div class="form-group">
             <label for="nom">Titre:</label>
-            <input type="text" class="form-control" id="nom" placeholder="Nom de l'espace..." value="{{$place->title}}"
-                   name="title">
-            <input type="text" class="form-control" id="nom" placeholder="Nom..." value="{{$place->id}}" name="id"
-                   hidden>
+            <input type="text" class="form-control" id="nom" placeholder="Nom de l'espace..." value="{{$place->title}}" name="title">
+            <input type="text" class="form-control" id="nom" placeholder="Nom..." value="{{$place->id}}" name="id" hidden>
         </div>
-        <img src="{{$place->picture}}" class="img-thumbnail" height="150" width="150"/>
+        <img src="{{env('APP_URL').'/uploads/'.$place->picture}}" class="img-thumbnail" height="150" width="150"/>
         <div class="form-group">
             <label for="photo">Photo:</label>
             <input type="file" class="form-control" id="photo" placeholder="Photo de la devanture..." name="picture">
@@ -58,8 +56,8 @@
 
                 map.addListener('click', function (e) {
                     placeMarkerAndPanTo(e.latLng, map);
-                    $('input#lat').attr('value',e.latLng.lat);
-                    $('input#long').attr('value',e.latLng.lng);
+                    $('input#lat').attr('value', e.latLng.lat);
+                    $('input#long').attr('value', e.latLng.lng);
                 });
             }
 
@@ -86,7 +84,6 @@
         <div class="form-group">
             <label for="nom">Titre:</label>
             <input type="text" class="form-control" id="nom" placeholder="Nom de l'espace..." name="title">
-            <input type="text" class="form-control" id="nom" placeholder="Nom..." name="id" hidden>
         </div>
         <div class="form-group">
             <label for="photo">Photo:</label>
@@ -119,8 +116,8 @@
 
                 map.addListener('click', function (e) {
                     placeMarkerAndPanTo(e.latLng, map);
-                    $('input#lat').attr('value',e.latLng.lat);
-                    $('input#long').attr('value',e.latLng.lng);
+                    $('input#lat').attr('value', e.latLng.lat);
+                    $('input#long').attr('value', e.latLng.lng);
                 });
             }
 
