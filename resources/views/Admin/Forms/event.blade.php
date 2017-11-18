@@ -5,6 +5,7 @@
         <div class="form-group">
             <label for="nom">Titre:</label>
             <input type="text" class="form-control" id="nom" placeholder="Nom..." value="{{$event->title}}" name="title">
+            <input hidden name="id" value="{{$event->id}}">
         </div>
     <img src="{{env('APP_URL').'/uploads/'.$event->picture}}" height="150" width="150" class="img-thumbnail">
         <div class="form-group">

@@ -20,10 +20,11 @@ use Illuminate\Support\Str;
 
 class adminController extends Controller
 {
-    const AVATAR_DIR='/artists/avatars';
-    const SAMPLES_DIR='/artists/samples';
-    const PLACE_PIC_DIR='/places/pictures';
-    const EVENT_PIC_DIR='/events/pictures';
+    const AVATAR_DIR = '/artists/avatars';
+    const SAMPLES_DIR = '/artists/samples';
+    const PLACE_PIC_DIR = '/places/pictures';
+    const EVENT_PIC_DIR = '/events/pictures';
+
     /**
      * Create a new controller instance.
      *
@@ -58,17 +59,17 @@ class adminController extends Controller
         $artists = Artist::all();
         $event = Event::find($id);
         $places = Place::all();
-        if($id){
-            $event->load('artists','place');
-           $event_artists= $event->artists()->get();
+        if ($id) {
+            $event->load('artists', 'place');
+            $event_artists = $event->artists()->get();
 
-           $list=array();
-           foreach ($event_artists as $a){
-               array_push($list,$a->id);
-           }
+            $list = array();
+            foreach ($event_artists as $a) {
+                array_push($list, $a->id);
+            }
 
         }
-        return view('Admin.eventForm', compact('event','places','artists','list'));
+        return view('Admin.eventForm', compact('event', 'places', 'artists', 'list'));
     }
 
     //********************************************AJOUT***************************************************************//
@@ -87,12 +88,12 @@ class adminController extends Controller
 
         //Avatar upload
         $picture = $request->file('avatar');
-        $avatar=Storage::disk('upload')->putFile($this::AVATAR_DIR,$picture);
+        $avatar = Storage::disk('upload')->putFile($this::AVATAR_DIR, $picture);
 
         //sample upload
         $audio = $request->file('urlSample');
 
-        $sample=Storage::disk('upload')->putFile($this::SAMPLES_DIR,$audio);
+        $sample = Storage::disk('upload')->putFile($this::SAMPLES_DIR, $audio);
 
         $artist->avatar = $avatar;
         $artist->urlsample = $sample;
@@ -118,7 +119,7 @@ class adminController extends Controller
         //Picture upload
         $picture = $request->file('picture');
 
-        $pic=Storage::disk('upload')->putFile($this::PLACE_PIC_DIR,$picture);
+        $pic = Storage::disk('upload')->putFile($this::PLACE_PIC_DIR, $picture);
 
         $place->picture = $pic;
 
@@ -155,10 +156,10 @@ class adminController extends Controller
         $event->begin = $request->input('begin');
         $event->end = $request->input('end');
 
-        $pic=$request->file('picture');
-        $picture=Storage::disk('upload')->putFile($this::EVENT_PIC_DIR,$pic);
+        $pic = $request->file('picture');
+        $picture = Storage::disk('upload')->putFile($this::EVENT_PIC_DIR, $pic);
 
-        $event->picture=$picture;
+        $event->picture = $picture;
 
         //associate with place
         $event->place()->associate($place);
@@ -228,7 +229,7 @@ class adminController extends Controller
 //            $avatar = time() . '.' . $picture->extension();
 //            $picture->move(public_path($this::AVATAR_DIR), $avatar);
 
-            $avatar=Storage::disk('upload')->putFile($this::AVATAR_DIR,$picture);
+            $avatar = Storage::disk('upload')->putFile($this::AVATAR_DIR, $picture);
             Storage::disk('upload')->delete($oldAvatar);
             $artist->avatar = $avatar;
 
@@ -242,7 +243,7 @@ class adminController extends Controller
 //            $sample = time() . '.' . $audio->getClientOriginalExtension();
 //            $audio->move(public_path($this::SAMPLES_DIR), $sample);
 
-            $sample=Storage::disk('upload')->putFile($this::SAMPLES_DIR,$audio);
+            $sample = Storage::disk('upload')->putFile($this::SAMPLES_DIR, $audio);
 
             Storage::disk('upload')->delete($oldSample);
 
@@ -256,7 +257,7 @@ class adminController extends Controller
     }
 
     //PERMET DE MODIFIER UN ESPACE
-    public function updatePlace(Request $request, Filesystem $fs)
+    public function updatePlace(Request $request)
     {
 
         $this->validate($request, [
@@ -274,10 +275,10 @@ class adminController extends Controller
 
         $oldPic = $place->picture;
 
-        if($request->file('picture')){
+        if ($request->file('picture')) {
             //Picture upload
             $picture = $request->file('picture');
-            $pic=Storage::disk('upload')->putFile($this::PLACE_PIC_DIR,$picture);
+            $pic = Storage::disk('upload')->putFile($this::PLACE_PIC_DIR, $picture);
             $place->picture = $pic;
         }
 
@@ -304,8 +305,6 @@ class adminController extends Controller
     {
         $this->validate($request, [
             'id' => 'required',
-            'place_id' => 'required',
-            'list_artists' => 'required|array'
         ]);
 
         $id = $request->input('id');
@@ -314,15 +313,25 @@ class adminController extends Controller
         $events = Event::all();
         $event = $events->find($id);
 
+        if ($request->file('picture')) {
+            $oldpic = $event->picture;
+
+            $pic = $request->file('picture');
+            $picture = Storage::disk('upload')->putFile($this::EVENT_PIC_DIR, $pic);
+            Storage::disk('upload')->delete($oldpic);
+            $event->picture = $picture;
+        }
+
+
         //On lui associe le nouvel espace
         $event->place_id = $request->input('place_id');
-        $event->save();
+
 
         //On synchronise avec la nouvelle liste de ID d'artistes
-        $array_id = $request->input('list_artists');
-        $event->artists()->sync($array_id);
-        $event->load('artists', 'place');
-        return response()->json($event);
+        $artists = $request->input('artists');
+        $event->artists()->sync($artists);
+        $event->save();
+        return redirect()->route('admin.index');
     }
 
     //********************************************SUPPRESSION***************************************************************//
