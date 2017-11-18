@@ -10,6 +10,7 @@ namespace App\Models;
 
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
 class Artist extends Model
 {
@@ -22,11 +23,11 @@ class Artist extends Model
 
     public function getAvatarAttribute($value)
     {
-        return public_path('/uploads/images/avatar/' ). $value;
+        return $value;
     }
 
     public function getUrlsampleAttribute($value)
     {
-        return public_path(). '/public/uploads/samples/' . $value;
+        return $value;
     }
 }

@@ -7,7 +7,7 @@
             <input type="text" class="form-control" id="nom" placeholder="Nom..." value="{{$artist->name}}" name="name">
             <input type="text" class="form-control" id="nom" placeholder="Nom..." value="{{$artist->id}}" name="id" hidden>
         </div>
-        <img src="{{$artist->avatar}}"/>
+        <img src="{{env('APP_URL').'/uploads/'.$artist->avatar}}" class="img-thumbnail" height="150" width="150"/>
         <div class="form-group">
             <label for="photo">Photo:</label>
             <input type="file" class="form-control" id="photo" placeholder="Photo..." name="avatar">

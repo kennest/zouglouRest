@@ -19,6 +19,7 @@ Route::get('/form/place/{id?}', ['as'=>'form.place','uses'=>'adminController@pla
 
 
 Route::get('/delartist/{id?}', ['as'=>'artist.delete','uses'=>'adminController@deleteArtist']);
+Route::get('/delplace/{id?}', ['as'=>'artist.delete','uses'=>'adminController@deletePlace']);
 
 
 //AJOUT ET MISE A JOUR

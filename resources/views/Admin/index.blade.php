@@ -34,7 +34,7 @@
                     @include('Admin.Lists.place')
                 </div>
                 <div class="col-lg-12">
-                    <a href="{{route('artist.add')}}" class="btn btn-lg btn-primary">Ajouter</a>
+                    <a href="{{route('form.place')}}" class="btn btn-lg btn-primary">Ajouter</a>
                 </div>
             </div>
         </div>

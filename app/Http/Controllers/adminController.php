@@ -16,9 +16,14 @@ use Illuminate\Http\Request;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class adminController extends Controller
 {
+    const AVATAR_DIR='/artists/avatars';
+    const SAMPLES_DIR='/artists/samples';
+    const PLACE_PIC_DIR='/places/pictures';
+    const EVENT_PIC_DIR='/events/pictures';
     /**
      * Create a new controller instance.
      *
@@ -36,16 +41,22 @@ class adminController extends Controller
         return view('Admin.index', compact('artists', 'places', 'events'));
     }
 
-    public function artistForm($id=null)
+    public function artistForm($id = null)
     {
-        $artist=Artist::find($id);
+        $artist = Artist::find($id);
         return view('Admin.artistForm', compact('artist'));
     }
 
-    public function placeForm($id=null)
+    public function placeForm($id = null)
     {
-        $place=Place::find($id);
+        $place = Place::find($id);
         return view('Admin.placeForm', compact('place'));
+    }
+
+    public function eventForm($id = null)
+    {
+        $event = Event::find($id);
+        return view('Admin.placeForm', compact('event'));
     }
 
     //********************************************AJOUT***************************************************************//
@@ -64,13 +75,16 @@ class adminController extends Controller
 
         //Avatar upload
         $picture = $request->file('avatar');
-        $avatar = time() . '.' . $picture->extension();
-        $picture->move(public_path('/uploads/images/avatar'), $avatar);
+//        $avatar = time() . '.' . $picture->extension();
+//        $picture->move(public_path($this::AVATAR_DIR), $avatar);
+        $avatar=Storage::disk('upload')->putFile($this::AVATAR_DIR,$picture);
 
         //sample upload
         $audio = $request->file('urlSample');
-        $sample = time() . '.' . $audio->getClientOriginalExtension();
-        $audio->move(public_path('/uploads/samples'), $sample);
+//        $sample = time() . '.' . $audio->getClientOriginalExtension();
+//        $audio->move(public_path($this::SAMPLES_DIR), $sample);
+
+        $sample=Storage::disk('upload')->putFile($this::SAMPLES_DIR,$audio);
 
         $artist->avatar = $avatar;
         $artist->urlsample = $sample;
@@ -97,7 +111,8 @@ class adminController extends Controller
         $picture = $request->file('picture');
 
         $pic = time() . '.' . $picture->extension();
-        $picture->move(public_path('/uploads/images/picture'), $pic);
+
+        $picture->move(storage_path('/uploads/images/picture'), $pic);
         $place->picture = $pic;
 
         $place->save();
@@ -194,24 +209,33 @@ class adminController extends Controller
         $artist->name = $request->input('name');
 
         //Si les images on ete chargees on upload les nouveaux
-        if($request->file('avatat') and $request->file('urlSample')){
+        if ($request->file('avatar')) {
             $oldAvatar = $artist->avatar;
-            $oldSample = $artist->urlsample;
             //Avatar upload
             $picture = $request->file('avatar');
-            $avatar = time() . '.' . $picture->extension();
-            $picture->move(public_path('/uploads/images/avatar'), $avatar);
+//            $avatar = time() . '.' . $picture->extension();
+//            $picture->move(public_path($this::AVATAR_DIR), $avatar);
+
+            $avatar=Storage::disk('upload')->putFile($this::AVATAR_DIR,$picture);
+            Storage::disk('upload')->delete($oldAvatar);
+            $artist->avatar = $avatar;
+
+        }
+
+        if ($request->file('urlSample')) {
+            $oldSample = $artist->urlsample;
 
             //sample upload
             $audio = $request->file('urlSample');
-            $sample = time() . '.' . $audio->getClientOriginalExtension();
-            $audio->move(public_path('/uploads/samples'), $sample);
+//            $sample = time() . '.' . $audio->getClientOriginalExtension();
+//            $audio->move(public_path($this::SAMPLES_DIR), $sample);
 
-            $artist->avatar = $avatar;
+            $sample=Storage::disk('upload')->putFile($this::SAMPLES_DIR,$audio);
+
+            Storage::disk('upload')->delete($oldSample);
+
             $artist->urlsample = $sample;
 
-            Storage::delete($oldAvatar);
-            Storage::delete($oldSample);
         }
 
         $artist->save();
@@ -240,7 +264,7 @@ class adminController extends Controller
         //Picture upload
         $picture = $request->file('picture');
         $pic = time() . '.' . $picture->extension();
-        $picture->move(public_path('/uploads/picture'), $pic);
+        $picture->move(storage_path('/uploads/picture'), $pic);
         $place->picture = $pic;
 
         $address->commune = $request->input('commune');
@@ -301,6 +325,7 @@ class adminController extends Controller
 
         //Recuperation de l'avatar
         $avatar = $artist->avatar;
+        $sample = $artist->urlsample;
 
         if ($artist->delete()) {
 
@@ -310,7 +335,8 @@ class adminController extends Controller
             }
 
             //On supprime l'avatar
-            Storage::delete($avatar);
+            Storage::disk('upload')->delete($avatar);
+            Storage::disk('upload')->delete($sample);
 
             return redirect()->route('admin.index');
         }
