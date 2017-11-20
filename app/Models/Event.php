@@ -35,5 +35,12 @@ class Event extends Model
         return $query->where('end', '<', Carbon::now()->toDateString());
     }
 
+    public function getBeginAttribute($value){
+        return Carbon::createFromFormat('m/d/Y',$value);
+    }
+
+    public function getEndAttribute($value){
+        return Carbon::createFromFormat('m/d/Y',$value);
+    }
 
 }
