@@ -36,11 +36,11 @@ class Event extends Model
     }
 
     public function getBeginAttribute($value){
-        return Carbon::parse($value)->format('M/d/Y');
+        return Carbon::parse($value)->format('m/d/Y');
     }
 
     public function getEndAttribute($value){
-        return Carbon::parse($value)->format('M/d/Y');
+        return Carbon::parse($value)->format('m/d/Y');
     }
 
 }
