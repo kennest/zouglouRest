@@ -86,6 +86,11 @@ class clientController extends Controller
         return response()->json($places);
     }
 
+    public function ArtistsWithEvents(){
+        $artist = Artist::with('events')->get();
+        return response()->json($artist);
+    }
+
     //PERMET DE SELECTIONNER UN ARTIST
     public function getArtist(Request $request)
     {
