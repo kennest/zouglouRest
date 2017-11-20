@@ -59,10 +59,12 @@ class clientController extends Controller
 
     //PERMET DE SELECTIONNER TOUTES LES PLACES QUI ONT DES EVENEMENTS
     public function allPlacesHasEvents(){
-        $places=Place::has('events');
-        $places->with(['events' => function ($query) {
+        //$places=Place::has('events');
+
+        //On recupere les evenements qui on une date de fin pas encore passé
+        $places=Place::whereHas('events' , function ($query) {
             $query->active();
-        }]);
+        });
         dd($places->get());
         return response()->json($places);
     }
