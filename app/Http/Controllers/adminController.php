@@ -384,17 +384,22 @@ class adminController extends Controller
         $picture = $place->picture;
 
         //Chargement des events lies
-        $place->load('events');
+        $place->load('events', 'place');
         $events = $place->events()->get();
+        $address = $place->address()->first();
 
-        //Suppression de la place
-        if ($place->delete()) {
-            //Suppression de tous les events lies
-            foreach ($events as $event) {
-                $event->delete();
+        //on supprime l'address
+        if($address->delete()){
+            //ensuite Suppression de la place
+            if ($place->delete()) {
+                //Suppression de tous les events lies
+                foreach ($events as $event) {
+                    $event->delete();
+                }
+                Storage::disk('upload')->delete($picture);
             }
-            Storage::disk('upload')->delete($picture);
         }
+
 
 
         return redirect()->route('admin.index');
