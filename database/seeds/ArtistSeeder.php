@@ -17,22 +17,22 @@ class ArtistSeeder extends Seeder
         Artist::create(
             [
                 'name' => 'Yode et Siro',
-                'avatar' => '1510590339.png',
-                'urlsample' => '1510218012.mp3'
+                'avatar' => 'artists/avatars/dzmCnGVddy3nHlZgClBcXxLZIFaypmFZpdiiek3l.jpeg',
+                'urlsample' => 'artists/samples/cDc4RAmrLgDkDNdlQ6VZDWJZJX7ptbKaYh74K3E6.mpga'
             ]
         );
         Artist::create(
             [
                 'name' => 'JC Pluriel',
-                'avatar' => '1510590329.png',
-                'urlsample' => '1510218012.mp3'
+                'avatar' => 'artists/avatars/Gq4gKA7IMJkGMwRnvE7radzt3SLVZvNye1ImagWV.jpeg',
+                'urlsample' => 'artists/samples/vSi6Y42Wkdia9fB74VjH5Cfc9waBPJwPUztMRCrF.mpga'
             ]
         );
         Artist::create(
             [
                 'name' => 'Yabongo',
-                'avatar' => 'yabongo.jpg',
-                'urlsample' => '1510218012.mp3'
+                'avatar' => 'nnjCAj8JvG3H44wqw7bgKauSCFe120fakBnEuBv1.jpeg',
+                'urlsample' => 'artists/samples/WtOHnJriGhzuBtx1Ke7MSKyxmJxwHAyEaaMK9eVI.mpga'
             ]
         );
     }

@@ -17,7 +17,7 @@ class EventSeeder extends Seeder
          [
              'title'=>'Nuit du Zouglou',
              'description'=>'Un evenement a ne surtout pas rater...',
-             'picture'=>'Nuit.jpeg',
+             'picture'=>'events/pictures/fUGUI3kPZHvG3qT6bSiTqMLu2H9iTix8QRJSRxWu.jpeg',
              'place_id'=>1,
              'begin'=>Carbon::createFromFormat('d/m/Y', '11/06/2017'),
              'end'=>Carbon::createFromFormat('d/m/Y', '15/06/2017')

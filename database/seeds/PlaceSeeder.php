@@ -16,7 +16,7 @@ class PlaceSeeder extends Seeder
      $place=Place::create(
          [
              'title'=>'Kirikou',
-             'picture'=>public_path('/uploads/images/picture/').'1510223487.png'
+             'picture'=>'places/pictures/7ch9QnqrBnmK5m8kHOWNplNqB7pkZBVTTY04VFGX.jpeg'
          ]
      );
 
