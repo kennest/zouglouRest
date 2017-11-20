@@ -16,7 +16,6 @@ class UsersSeeder extends Seeder
             'name'=>'admin',
             'email'=>'admin@ipwav.com',
             'password'=>Hash::make('admin'),
-            'api_token'=>str_random(32)
         ]);
     }
 }
