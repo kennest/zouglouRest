@@ -6,8 +6,3 @@
         </div>
     </div>
 @endsection()
-@section('script')
-    <script>
-        $('.date').datepicker();
-    </script>
-    @endsection()

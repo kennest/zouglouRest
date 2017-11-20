@@ -9,22 +9,27 @@
 namespace App\Models;
 
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Event extends Model
 {
-    protected $fillable = ['title','picture','description','begin','end'];
+    protected $fillable = ['title', 'picture', 'description', 'begin', 'end'];
 
     public function artists()
     {
         return $this->belongsToMany(\App\Models\Artist::class)->withPivot('artist_id');
     }
+
     public function place()
     {
-        return $this->belongsTo(\App\Models\Place::class,'place_id');
+        return $this->belongsTo(\App\Models\Place::class, 'place_id');
     }
-    public function getPictureAttribute($value){
-        return $value;
+
+    public function scopeActive($query)
+    {
+        return $query->where('end', '<=', Carbon::now()->toDateString());
     }
+
 
 }

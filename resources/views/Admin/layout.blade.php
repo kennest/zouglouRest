@@ -38,8 +38,6 @@
 <script src="{{ asset('js/popper.js') }}"></script>
 <script src="{{ asset('js/tooltip.js') }}"></script>
 <script src="{{ asset('js/bootstrap.js') }}"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.standalone.min.css" rel="stylesheet" type="text/css" />
 @yield('script')
 </body>
 </html>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Artist;
 use App\Models\Event;
 use App\Models\Place;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Users;
 use Illuminate\Support\Facades\Hash;
@@ -39,20 +40,6 @@ class clientController extends Controller
         }
     }
 
-    public function isValid(Request $request){
-        $request=$request->json()->all();
-        $result=null;
-        //On verifie si il y a un token et si il es valide
-        if($request['token']){
-            $user=Users::where('api_token',$request['token']);
-            if($user){
-                $result=true;
-            }else{
-                $result=false;
-            }
-        }
-        return response()->json($result);
-    }
 
     //SELECTIONNE TOUS LES ARTISTES
     public function allArtists()
@@ -68,6 +55,16 @@ class clientController extends Controller
         $events=Event::all();
         $events->load('artists','place.address');
         return response()->json($events);
+    }
+
+    //PERMET DE SELECTIONNER TOUTES LES PLACES QUI ONT DES EVENEMENTS
+    public function allPlacesHasEvents(){
+        $places=Place::has('events');
+        $places->with(['events' => function ($query) {
+            $query->active();
+        }]);
+        dd($places->get());
+        return response()->json($places);
     }
 
 

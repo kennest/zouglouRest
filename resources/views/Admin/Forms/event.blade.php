@@ -14,11 +14,11 @@
         </div>
         <div class="form-group">
             <label for="photo">Date de Debut:</label>
-            <input name="begin" width="276" class="date form-control" placeholder="MM/DD/YYYY" value="{{$event->begin}}"/>
+            <input type="date" name="begin" value="{{$event->begin}}" class="form-control">
         </div>
         <div class="form-group">
             <label for="photo">Date de Fin:</label>
-            <input name="end" width="276" class="date form-control" placeholder="MM/DD/YYYY" value="{{$event->end}}"/>
+            <input type="date" name="end" value="{{$event->end}}" class="form-control">
         </div>
         <div class="form-group">
             <label>Artistes:</label>
@@ -54,11 +54,11 @@
         </div>
         <div class="form-group">
             <label for="photo">Date de Debut:</label>
-            <input name="begin" width="276" class="date form-control" placeholder="MM/DD/YYYY"/>
+            {!! Form::date('begin', \Carbon\Carbon::now(),['class'=>'form-control']); !!}
         </div>
         <div class="form-group">
             <label for="photo">Date de Fin:</label>
-            <input name="end" width="276" class="date form-control" placeholder="MM/DD/YYYY"/>
+            {!! Form::date('end', \Carbon\Carbon::now(),['class'=>'form-control']); !!}
         </div>
     <div class="form-group">
         <label>Artistes:</label>

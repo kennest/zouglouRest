@@ -27,4 +27,8 @@ class Place extends Model
     public function getPictureAttribute($value){
         return $value;
     }
+
+    public function activeEvents(){
+        return $this->events()->active();
+    }
 }

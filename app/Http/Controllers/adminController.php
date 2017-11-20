@@ -12,11 +12,10 @@ use App\Models\Address;
 use App\Models\Artist;
 use App\Models\Event;
 use App\Models\Place;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Filesystem\Filesystem;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
+
 
 class adminController extends Controller
 {
@@ -32,11 +31,13 @@ class adminController extends Controller
      */
     public function __construct()
     {
+
     }
 
     public function index()
     {
         $artists = Artist::all();
+        //dd(Event::active()->get());
         $events = Event::all();
         $places = Place::all();
         return view('Admin.index', compact('artists', 'places', 'events'));
@@ -144,6 +145,7 @@ class adminController extends Controller
             'artists' => 'required|array',
             'place_id' => 'required|integer'
         ]);
+
 
         $artists = $request->input('artists');
 
@@ -306,7 +308,6 @@ class adminController extends Controller
         $this->validate($request, [
             'id' => 'required',
         ]);
-
         $id = $request->input('id');
 
         //On recupere l'Event
@@ -326,6 +327,11 @@ class adminController extends Controller
         //On lui associe le nouvel espace
         $event->place_id = $request->input('place_id');
 
+        $event->title = $request->input('title');
+        $event->description = $request->input('description');
+        $event->begin = $request->input('begin');
+        $event->end = $request->input('end');
+
 
         //On synchronise avec la nouvelle liste de ID d'artistes
         $artists = $request->input('artists');
@@ -336,7 +342,7 @@ class adminController extends Controller
 
     //********************************************SUPPRESSION***************************************************************//
 
-    public function deleteArtist($id=null)
+    public function deleteArtist($id = null)
     {
 
         //On recupere l'artiste et on charge les events
@@ -368,7 +374,7 @@ class adminController extends Controller
 
     }
 
-    public function deletePlace($id=null)
+    public function deletePlace($id = null)
     {
 
         //Recuperation de l'espace
@@ -394,12 +400,12 @@ class adminController extends Controller
         return redirect()->route('admin.index');
     }
 
-    public function deleteEvent($id=null)
+    public function deleteEvent($id = null)
     {
         $events = Event::all();
         $event = $events->find($id);
 
-        $pic=$event->picture;
+        $pic = $event->picture;
         $event->load('artists');
         $artists = $event->artists()->get();
 
