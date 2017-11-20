@@ -68,14 +68,14 @@ class clientController extends Controller
     }
 
     //PERMET DE SELECTIONNER TOUTES LES PLACES QUI ONT DES EVENEMENTS
-    public function allPlacesHasEvents()
+    public function PlacesWithActiveEvents()
     {
 
         //On recupere les evenements qui on une date de fin pas encore passé
         $places = Place::whereHas('events', function ($query) {
             $query->active();
         })->get();
-        $places->load('events');
+        $places->load('events','address');
         return response()->json($places);
     }
 
@@ -95,7 +95,6 @@ class clientController extends Controller
     public function getEvent(Request $request)
     {
         $id = $request->input('id');
-
 
         //retourne l'event et l'artiste qui y participe
         $event = Event::with('artists')->findOrFail($id);
