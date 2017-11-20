@@ -384,7 +384,7 @@ class adminController extends Controller
         $picture = $place->picture;
 
         //Chargement des events lies
-        $place->load('events', 'place');
+        $place->load('events', 'address');
         $events = $place->events()->get();
         $address = $place->address()->first();
 
