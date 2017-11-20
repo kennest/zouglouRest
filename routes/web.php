@@ -37,4 +37,5 @@ Route::group(['prefix' => 'api'], function ($route) {
     $route->get('/places',['uses'=>'clientController@PlacesWithActiveEvents']);
     $route->get('/activeevents',['uses'=>'clientController@allActiveEvents']);
     $route->get('/inactiveevents',['uses'=>'clientController@allInactiveEvents']);
+    $route->get('/placeshistory',['uses'=>'clientController@PlacesWithEvents']);
 });

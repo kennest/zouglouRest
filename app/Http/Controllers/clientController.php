@@ -75,10 +75,16 @@ class clientController extends Controller
         $places = Place::whereHas('events', function ($query) {
             $query->active();
         })->get();
-        $places->load('events','address');
+        $places->load('events', 'address');
         return response()->json($places);
     }
 
+    //PERMET DE SELCTIONNER LES PLACES AVEC TOUS SES EVENEMENTS(actif ou inactif)
+    public function PlacesWithEvents()
+    {
+        $places=Place::with('events')->get();
+        return response()->json($places);
+    }
 
     //PERMET DE SELECTIONNER UN ARTIST
     public function getArtist(Request $request)
