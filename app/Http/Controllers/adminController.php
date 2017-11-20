@@ -394,7 +394,7 @@ class adminController extends Controller
             if ($place->delete()) {
                 //Suppression de tous les events lies
                 foreach ($events as $event) {
-                    $event->delete();
+                    $this->deleteEvent($event->id);
                 }
                 Storage::disk('upload')->delete($picture);
             }
