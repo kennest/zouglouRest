@@ -64,8 +64,9 @@ class clientController extends Controller
         //On recupere les evenements qui on une date de fin pas encore passé
         $places=Place::whereHas('events' , function ($query) {
             $query->active();
-        });
-        dd($places->get());
+        })->get();
+        $places->load('events');
+        //dd($places->get());
         return response()->json($places);
     }
 
