@@ -35,4 +35,5 @@ Route::post('/updateevent', ['as'=>'event.update','before' => 'csrf','uses'=>'ad
 
 Route::group(['prefix' => 'api'], function ($route) {
     $route->get('/places',['uses'=>'clientController@allPlacesHasEvents']);
+    $route->get('/activeevents',['uses'=>'clientController@allActiveEvents']);
 });

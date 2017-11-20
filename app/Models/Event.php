@@ -31,5 +31,9 @@ class Event extends Model
         return $query->where('end', '>=', Carbon::now()->toDateString());
     }
 
+    public function scopeInactive($query){
+        return $query->where('end', '<', Carbon::now()->toDateString());
+    }
+
 
 }

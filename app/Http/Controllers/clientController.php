@@ -24,19 +24,20 @@ class clientController extends Controller
     }
 
     //Authenfication de l'Utilisateur
-    public function authenticate(Request $request){
-        $request=$request->json()->all();
+    public function authenticate(Request $request)
+    {
+        $request = $request->json()->all();
         $user = Users::where('email', $request['email'])->first();
-        if($user){
-            if(Hash::check($request['password'], $user->password)){
+        if ($user) {
+            if (Hash::check($request['password'], $user->password)) {
                 $apitoken = base64_encode(str_random(40));
                 Users::where('email', $request['email'])->update(['api_token' => "$apitoken"]);
-                return response()->json(['status' => 'success','api_token' => $apitoken]);
-            }else{
-                return response()->json(['status' => 'fail'],401);
+                return response()->json(['status' => 'success', 'api_token' => $apitoken]);
+            } else {
+                return response()->json(['status' => 'fail'], 401);
             }
-        }else{
-            return response()->json(['status'=>'Not Authentified'],401);
+        } else {
+            return response()->json(['status' => 'Not Authentified'], 401);
         }
     }
 
@@ -50,23 +51,31 @@ class clientController extends Controller
     }
 
 
-    //PERMET DE SELECTIONNER TOUS LES EVENEMENTS
-    public function allEvents(){
-        $events=Event::all();
-        $events->load('artists','place.address');
+    //PERMET DE SELECTIONNER TOUS LES EVENEMENTS ACTIFS
+    public function allActiveEvents()
+    {
+        $events = Event::active()->get();
+        $events->load('artists', 'place.address');
+        return response()->json($events);
+    }
+
+    //PERMET DE SELECTIONNER TOUS LES EVENEMENTS INACTIF
+    public function allInactiveEvents()
+    {
+        $events = Event::inactive()->get();
+        $events->load('artists', 'place.address');
         return response()->json($events);
     }
 
     //PERMET DE SELECTIONNER TOUTES LES PLACES QUI ONT DES EVENEMENTS
-    public function allPlacesHasEvents(){
-        //$places=Place::has('events');
+    public function allPlacesHasEvents()
+    {
 
         //On recupere les evenements qui on une date de fin pas encore passé
-        $places=Place::whereHas('events' , function ($query) {
+        $places = Place::whereHas('events', function ($query) {
             $query->active();
         })->get();
         $places->load('events');
-        //dd($places->get());
         return response()->json($places);
     }
 
