@@ -47,7 +47,7 @@ class clientController extends Controller
     {
         $artists = Artist::All();
         $artists->load('events');
-        return response()->json($artists);
+        $artists->toJson();
     }
 
 
@@ -56,7 +56,7 @@ class clientController extends Controller
     {
         $events = Event::active()->get();
         $events->load('artists', 'place.address');
-        return response()->json($events);
+        return $events->toJson();
     }
 
     //PERMET DE SELECTIONNER TOUS LES EVENEMENTS INACTIF
@@ -64,7 +64,7 @@ class clientController extends Controller
     {
         $events = Event::inactive()->get();
         $events->load('artists', 'place.address');
-        return response()->json($events);
+        return $events->toJson();
     }
 
     //PERMET DE SELECTIONNER TOUTES LES PLACES QUI ONT DES EVENEMENTS
@@ -76,19 +76,19 @@ class clientController extends Controller
             $query->active();
         })->get();
         $places->load('events', 'address');
-        return response()->json($places);
+        return $places->toJson();
     }
 
     //PERMET DE SELCTIONNER LES PLACES AVEC TOUS SES EVENEMENTS(actif ou inactif)
     public function PlacesWithEvents()
     {
         $places=Place::with('events')->get();
-        return response()->json($places);
+        return $places->toJson();
     }
 
     public function ArtistsWithEvents(){
         $artist = Artist::with('events')->get();
-        return response()->json($artist);
+        return $artist->toJson();
     }
 
     //PERMET DE SELECTIONNER UN ARTIST
@@ -99,7 +99,7 @@ class clientController extends Controller
         //retourne l'artiste et les evenements auxquels il participe
         $artist = Artist::with('events')->findOrFail($id);
 
-        return response()->json($artist);
+        return $artist->toJson();
     }
 
     //PERMET DE SELECTIONNER UN EVENEMENT
@@ -109,7 +109,7 @@ class clientController extends Controller
 
         //retourne l'event et l'artiste qui y participe
         $event = Event::with('artists')->findOrFail($id);
-        return response()->json($event);
+        return $event->toJson();
     }
 
     //PERMET DE SELECTIONNER UNE PLACE
@@ -120,6 +120,6 @@ class clientController extends Controller
         //retourne l'event et l'artiste qui y participe
         $place = Place::with(['events', 'addresses'])->findOrFail($id);
 
-        return response()->json($place);
+        return $place->toJson();
     }
 }
