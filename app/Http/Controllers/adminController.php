@@ -292,6 +292,7 @@ class adminController extends Controller
         $address->lat = $request->input('lat');
         $address->long = $request->input('long');
 
+        var_dump($address);
         //$place->address()->associate($address);
 
         Storage::disk('upload')->delete($oldPic);
