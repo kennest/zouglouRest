@@ -81,8 +81,8 @@ class clientController extends Controller
 
     public function SimilarEvents($word){
        $events=Event::with(['place' => function ($query) use($word){
-           $query->whereHas('address', function ($query) use($word){
-               $query->where('commune','=',$word);
+           $query->whereHas('address', function ($q) use($word){
+               $q->where('commune','=',$word);
            });
        }])->get();
        return $events->toJson();
