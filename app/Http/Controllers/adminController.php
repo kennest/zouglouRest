@@ -89,12 +89,12 @@ class adminController extends Controller
 
         //Avatar upload
         $picture = $request->file('avatar');
-        $avatar = Storage::disk('dropbox')->putFile($this::AVATAR_DIR, $picture);
+        $avatar = Storage::disk('upload')->putFile($this::AVATAR_DIR, $picture);
 
         //sample upload
         $audio = $request->file('urlSample');
 
-        $sample = Storage::disk('dropbox')->putFile($this::SAMPLES_DIR, $audio);
+        $sample = Storage::disk('upload')->putFile($this::SAMPLES_DIR, $audio);
 
         $artist->avatar = $avatar;
         $artist->urlsample = $sample;
@@ -120,7 +120,7 @@ class adminController extends Controller
         //Picture upload
         $picture = $request->file('picture');
 
-        $pic = Storage::disk('dropbox')->putFile($this::PLACE_PIC_DIR, $picture);
+        $pic = Storage::disk('upload')->putFile($this::PLACE_PIC_DIR, $picture);
 
         $place->picture = $pic;
 
@@ -159,7 +159,7 @@ class adminController extends Controller
         $event->end = $request->input('end');
 
         $pic = $request->file('picture');
-        $picture = Storage::disk('dropbox')->putFile($this::EVENT_PIC_DIR, $pic);
+        $picture = Storage::disk('upload')->putFile($this::EVENT_PIC_DIR, $pic);
 
         $event->picture = $picture;
 
@@ -231,8 +231,8 @@ class adminController extends Controller
 //            $avatar = time() . '.' . $picture->extension();
 //            $picture->move(public_path($this::AVATAR_DIR), $avatar);
 
-            $avatar = Storage::disk('dropbox')->putFile($this::AVATAR_DIR, $picture);
-            Storage::disk('dropbox')->delete($oldAvatar);
+            $avatar = Storage::disk('upload')->putFile($this::AVATAR_DIR, $picture);
+            Storage::disk('upload')->delete($oldAvatar);
             $artist->avatar = $avatar;
 
         }
@@ -245,9 +245,9 @@ class adminController extends Controller
 //            $sample = time() . '.' . $audio->getClientOriginalExtension();
 //            $audio->move(public_path($this::SAMPLES_DIR), $sample);
 
-            $sample = Storage::disk('dropbox')->putFile($this::SAMPLES_DIR, $audio);
+            $sample = Storage::disk('upload')->putFile($this::SAMPLES_DIR, $audio);
 
-            Storage::disk('dropbox')->delete($oldSample);
+            Storage::disk('upload')->delete($oldSample);
 
             $artist->urlsample = $sample;
 
@@ -280,7 +280,7 @@ class adminController extends Controller
         if ($request->file('picture')) {
             //Picture upload
             $picture = $request->file('picture');
-            $pic = Storage::disk('dropbox')->putFile($this::PLACE_PIC_DIR, $picture);
+            $pic = Storage::disk('upload')->putFile($this::PLACE_PIC_DIR, $picture);
             $place->picture = $pic;
         }
 
@@ -292,7 +292,7 @@ class adminController extends Controller
 
         //$place->address()->associate($address);
 
-        Storage::disk('dropbox')->delete($oldPic);
+        Storage::disk('upload')->delete($oldPic);
 
         $address->save();
         $place->save();
@@ -318,8 +318,8 @@ class adminController extends Controller
             $oldpic = $event->picture;
 
             $pic = $request->file('picture');
-            $picture = Storage::disk('dropbox')->putFile($this::EVENT_PIC_DIR, $pic);
-            Storage::disk('dropbox')->delete($oldpic);
+            $picture = Storage::disk('upload')->putFile($this::EVENT_PIC_DIR, $pic);
+            Storage::disk('upload')->delete($oldpic);
             $event->picture = $picture;
         }
 
@@ -365,8 +365,8 @@ class adminController extends Controller
             }
 
             //On supprime l'avatar
-            Storage::disk('dropbox')->delete($avatar);
-            Storage::disk('dropbox')->delete($sample);
+            Storage::disk('upload')->delete($avatar);
+            Storage::disk('upload')->delete($sample);
 
             return redirect()->route('admin.index');
         }
@@ -396,7 +396,7 @@ class adminController extends Controller
                 foreach ($events as $event) {
                     $this->deleteEvent($event->id);
                 }
-                Storage::disk('dropbox')->delete($picture);
+                Storage::disk('upload')->delete($picture);
             }
         }
 
@@ -418,7 +418,7 @@ class adminController extends Controller
             foreach ($artists as $artist) {
                 $artist->events()->detach();
             }
-            Storage::disk('dropbox')->delete($pic);
+            Storage::disk('upload')->delete($pic);
         }
         return redirect()->route('admin.index');
     }
