@@ -80,7 +80,7 @@ class clientController extends Controller
     }
 
     public function SimilarEvents($word){
-       $events=Event::with(['places' => function ($query) use($word){
+       $events=Event::with(['place' => function ($query) use($word){
            $query->wherHas('address', function ($query) use($word){
                $query->where('commune','=',$word);
            });
