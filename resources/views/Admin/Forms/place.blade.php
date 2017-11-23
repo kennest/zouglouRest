@@ -19,7 +19,7 @@
                 <label>Artistes:</label>
                 <select name="commune" class="form-control">
                     @foreach($communes as $c)
-                        @if($place->address->commune=$c))
+                        @if($place->address->commune===$c))
                         <option value="{{$c}}"  selected="true">{{$c}}</option>
                         @endif
                     @endforeach
