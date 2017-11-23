@@ -6,10 +6,10 @@ use App\Models\Artist;
 use App\Models\Event;
 use App\Models\Place;
 use Carbon\Carbon;
+use function foo\func;
 use Illuminate\Http\Request;
 use App\Users;
 use Illuminate\Support\Facades\Hash;
-use Laravel\Lumen\Routing\UrlGenerator;
 
 class clientController extends Controller
 {
@@ -77,6 +77,15 @@ class clientController extends Controller
         })->get();
         $places->load('events', 'address');
         return $places->toJson();
+    }
+
+    public function SimilarEvents($word){
+       $events=Event::with(['places' => function ($query) use($word){
+           $query->wherHas('address', function ($query) use($word){
+               $query->where('commune','=',$word);
+           });
+       }])->get();
+       return $events->toJson();
     }
 
     //PERMET DE SELCTIONNER LES PLACES AVEC TOUS SES EVENEMENTS(actif ou inactif)

@@ -38,5 +38,6 @@ Route::group(['prefix' => 'api'], function ($route) {
     $route->get('/activeevents',['uses'=>'clientController@allActiveEvents']);
     $route->get('/inactiveevents',['uses'=>'clientController@allInactiveEvents']);
     $route->get('/placeshistory',['uses'=>'clientController@PlacesWithEvents']);
+    $route->get('/similar/{word}',['uses'=>'clientController@SimilarEvents']);
     $route->get('/artists',['uses'=>'clientController@ArtistsWithEvents']);
 });
