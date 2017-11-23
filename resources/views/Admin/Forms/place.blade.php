@@ -21,6 +21,8 @@
                     @foreach($communes as $c)
                         @if($place->address->commune===$c))
                         <option value="{{$c}}"  selected="true">{{$c}}</option>
+                            @else
+                            <option value="{{$c}}">{{$c}}</option>
                         @endif
                     @endforeach
                 </select>
