@@ -81,7 +81,7 @@ class clientController extends Controller
     public function SimilarEvents($word){
        $places=Place::whereHas('address' , function ($q) use($word){
                $q->where('commune','like',$word);
-       })->load('events')->get();
+       })->get()->load('events');
        return $places->toJson();
     }
 
