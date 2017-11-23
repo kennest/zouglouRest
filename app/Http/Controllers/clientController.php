@@ -80,10 +80,11 @@ class clientController extends Controller
     }
 
     public function SimilarEvents($word){
-       $events=Place::whereHas('address' , function ($q) use($word){
+       $places=Place::whereHas('address' , function ($q) use($word){
                $q->where('commune','like',$word);
        })->get();
-       return $events->toJson();
+       $places->load('events.active');
+       return $places->toJson();
     }
 
     //PERMET DE SELCTIONNER LES PLACES AVEC TOUS SES EVENEMENTS(actif ou inactif)
