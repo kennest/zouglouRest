@@ -100,9 +100,8 @@ class clientController extends Controller
     }
 
     //PERMET DE SELECTIONNER UN ARTIST
-    public function getArtist(Request $request)
+    public function getArtist($id)
     {
-        $id = $request->input('id');
 
         //retourne l'artiste et les evenements auxquels il participe
         $artist = Artist::with('events')->findOrFail($id);
@@ -111,20 +110,16 @@ class clientController extends Controller
     }
 
     //PERMET DE SELECTIONNER UN EVENEMENT
-    public function getEvent(Request $request)
+    public function getEvent($id)
     {
-        $id = $request->input('id');
-
         //retourne l'event et l'artiste qui y participe
         $event = Event::with('artists')->findOrFail($id);
         return $event->toJson();
     }
 
     //PERMET DE SELECTIONNER UNE PLACE
-    public function getPlace(Request $request)
+    public function getPlace($id)
     {
-        $id = $request->input('id');
-
         //retourne l'event et l'artiste qui y participe
         $place = Place::with(['events', 'addresses'])->findOrFail($id);
 

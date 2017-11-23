@@ -34,10 +34,17 @@ Route::post('/updateplace', ['as'=>'place.update','before' => 'csrf','uses'=>'ad
 Route::post('/updateevent', ['as'=>'event.update','before' => 'csrf','uses'=>'adminController@updateEvent']);
 
 Route::group(['prefix' => 'api'], function ($route) {
+
     $route->get('/places',['uses'=>'clientController@PlacesWithActiveEvents']);
+    $route->get('/artists',['uses'=>'clientController@ArtistsWithEvents']);
+
     $route->get('/activeevents',['uses'=>'clientController@allActiveEvents']);
     $route->get('/inactiveevents',['uses'=>'clientController@allInactiveEvents']);
     $route->get('/placeshistory',['uses'=>'clientController@PlacesWithEvents']);
     $route->get('/similar/{word}',['uses'=>'clientController@SimilarEvents']);
-    $route->get('/artists',['uses'=>'clientController@ArtistsWithEvents']);
+
+
+    $route->get('/artist/{id}',['uses'=>'clientController@getArtist']);
+    $route->get('/place/{id}',['uses'=>'clientController@getPlace']);
+    $route->get('/event/{id}',['uses'=>'clientController@getEvent']);
 });
