@@ -82,6 +82,9 @@ class clientController extends Controller
        $places=Place::whereHas('address' , function ($q) use($word){
                $q->where('commune','like','%'.$word.'%');
        })->get()->load('events');
+       $places=$places->whereHas('events', function ($query) {
+           $query->active();
+       })->get();
        return $places->toJson();
     }
 
