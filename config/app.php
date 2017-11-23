@@ -166,7 +166,7 @@ return [
         Collective\Html\HtmlServiceProvider::class,
         Barryvdh\Debugbar\ServiceProvider::class,
         Barryvdh\Cors\ServiceProvider::class,
-        BC\Laravel\DropboxDriver\ServiceProvider::class,
+        \App\Providers\DropboxServiceProvider::class,
         /*
          * Package Service Providers...
          */
