@@ -17,7 +17,7 @@
             <legend>Addresse</legend>
             <div class="form-group">
                 <label>Artistes:</label>
-                <select name="commune" class="form-control">
+                <select name="commune[]" class="form-control">
                     @foreach($communes as $c)
                         <option value="{{$c}}" {{$r = (in_array($place->address->commune,$communes)) ? 'selected' : ''}}>{{$c}}</option>
                     @endforeach
@@ -96,7 +96,7 @@
             <legend>Addresse</legend>
             <div class="form-group">
                 <label for="photo">Commune:</label>
-                <select name="commune" class="form-control">
+                <select name="commune[]" class="form-control">
                     @foreach($communes as $c)
                         <option value="{{$c}}">{{$c}}</option>
                     @endforeach
