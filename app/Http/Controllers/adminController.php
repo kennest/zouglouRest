@@ -23,6 +23,7 @@ class adminController extends Controller
     const SAMPLES_DIR = '/artists/samples';
     const PLACE_PIC_DIR = '/places/pictures';
     const EVENT_PIC_DIR = '/events/pictures';
+    const COMMUNE = array('Abobo', 'Adjamé', 'Atécoubé', 'Cocody', 'Koumassi', 'Marcory', 'Plateau', 'Port-Bouet', 'Treichville', 'Yopougon');
 
     /**
      * Create a new controller instance.
@@ -51,8 +52,9 @@ class adminController extends Controller
 
     public function placeForm($id = null)
     {
+        $communes=$this::COMMUNE;
         $place = Place::find($id);
-        return view('Admin.placeForm', compact('place'));
+        return view('Admin.placeForm', compact('place','communes'));
     }
 
     public function eventForm($id = null)
@@ -389,7 +391,7 @@ class adminController extends Controller
         $address = $place->address()->first();
 
         //on supprime l'address
-        if($address->delete()){
+        if ($address->delete()) {
             //ensuite Suppression de la place
             if ($place->delete()) {
                 //Suppression de tous les events lies
@@ -399,7 +401,6 @@ class adminController extends Controller
                 Storage::disk('upload')->delete($picture);
             }
         }
-
 
 
         return redirect()->route('admin.index');

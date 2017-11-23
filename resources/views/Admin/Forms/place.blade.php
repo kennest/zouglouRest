@@ -16,9 +16,12 @@
         <fieldset>
             <legend>Addresse</legend>
             <div class="form-group">
-                <label for="photo">Commune:</label>
-                <input type="text" class="form-control" id="photo" placeholder="Commune..." name="commune"
-                       value="{{$place->address->commune}}">
+                <label>Artistes:</label>
+                <select name="commune[]" class="form-control" multiple="true">
+                    @foreach($communes as $c)
+                        <option value="{{$c->commune}}" {{$r = (in_array($place->commune,$communes)) ? 'selected' : ''}}>{{$c}}</option>
+                    @endforeach
+                </select>
             </div>
             <div class="form-group">
                 <label for="photo">Quartier:</label>
@@ -93,7 +96,11 @@
             <legend>Addresse</legend>
             <div class="form-group">
                 <label for="photo">Commune:</label>
-                <input type="text" class="form-control" id="photo" placeholder="Commune..." name="commune">
+                <select name="commune[]" class="form-control" multiple="true">
+                    @foreach($communes as $c)
+                        <option value="{{$c->commune}}">{{$c}}</option>
+                    @endforeach
+                </select>
             </div>
             <div class="form-group">
                 <label for="photo">Quartier:</label>
