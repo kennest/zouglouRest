@@ -70,7 +70,6 @@ class clientController extends Controller
     //PERMET DE SELECTIONNER TOUTES LES PLACES QUI ONT DES EVENEMENTS
     public function PlacesWithActiveEvents()
     {
-
         //On recupere les evenements qui on une date de fin pas encore passé
         $places = Place::whereHas('events', function ($query) {
             $query->active();
@@ -82,8 +81,8 @@ class clientController extends Controller
     public function SimilarEvents($word){
        $places=Place::whereHas('address' , function ($q) use($word){
                $q->where('commune','like',$word);
-       })->get();
-       $places->load('events.active');
+       });
+       $places->load('events.active')->get();
        return $places->toJson();
     }
 
