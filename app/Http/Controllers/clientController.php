@@ -84,7 +84,7 @@ class clientController extends Controller
        })->get()->load(['events' => function ($query) {
            $query->where('end', '>=', Carbon::now()->toDateString());
        }]);
-       return $places->toJson();
+       return $places->events()->toJson();
     }
 
     //PERMET DE SELCTIONNER LES PLACES AVEC TOUS SES EVENEMENTS(actif ou inactif)
