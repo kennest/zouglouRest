@@ -19,7 +19,7 @@
                 <label>Artistes:</label>
                 <select name="commune[]" class="form-control" multiple="true">
                     @foreach($communes as $c)
-                        <option value="{{$c->commune}}" {{$r = (in_array($place->commune,$communes)) ? 'selected' : ''}}>{{$c}}</option>
+                        <option value="{{$c}}" {{$r = (in_array($place->commune,$communes)) ? 'selected' : ''}}>{{$c}}</option>
                     @endforeach
                 </select>
             </div>
@@ -98,7 +98,7 @@
                 <label for="photo">Commune:</label>
                 <select name="commune[]" class="form-control" multiple="true">
                     @foreach($communes as $c)
-                        <option value="{{$c->commune}}">{{$c}}</option>
+                        <option value="{{$c}}">{{$c}}</option>
                     @endforeach
                 </select>
             </div>
