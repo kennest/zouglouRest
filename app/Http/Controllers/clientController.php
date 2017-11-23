@@ -104,7 +104,7 @@ class clientController extends Controller
     {
 
         //retourne l'artiste et les evenements auxquels il participe
-        $artist = Artist::with('events')->findOrFail($id);
+        $artist = Artist::with('events.place')->findOrFail($id);
 
         return $artist->toJson();
     }
