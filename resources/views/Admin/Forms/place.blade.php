@@ -19,7 +19,9 @@
                 <label>Artistes:</label>
                 <select name="commune" class="form-control">
                     @foreach($communes as $c)
-                        <option value="{{$c}}" {{$r = (in_array((string)$place->address->commune,$communes)) ? 'selected' : ''}}>{{$c}}</option>
+                        @if($places->address->commune=$c))
+                        <option value="{{$c}}"  selected="true">{{$c}}</option>
+                        @endif
                     @endforeach
                 </select>
             </div>
