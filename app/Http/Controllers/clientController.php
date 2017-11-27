@@ -113,7 +113,7 @@ class clientController extends Controller
     public function getEvent($id)
     {
         //retourne l'event et l'artiste qui y participe
-        $event = Event::with('artists')->findOrFail($id);
+        $event = Event::with('artists','place.address')->findOrFail($id);
         return $event->toJson();
     }
 
