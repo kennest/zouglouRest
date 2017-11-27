@@ -46,7 +46,7 @@ class clientController extends Controller
     public function allArtists()
     {
         $artists = Artist::All();
-        $artists->load('events');
+        $artists->load('events.place.address');
         $artists->toJson();
     }
 
@@ -95,7 +95,7 @@ class clientController extends Controller
     }
 
     public function ArtistsWithEvents(){
-        $artist = Artist::with('events')->get();
+        $artist = Artist::with('events.place.address')->get();
         return $artist->toJson();
     }
 
@@ -104,7 +104,7 @@ class clientController extends Controller
     {
 
         //retourne l'artiste et les evenements auxquels il participe
-        $artist = Artist::with('events.place')->findOrFail($id);
+        $artist = Artist::with('events.place.address')->findOrFail($id);
 
         return $artist->toJson();
     }
@@ -121,7 +121,7 @@ class clientController extends Controller
     public function getPlace($id)
     {
         //retourne l'event et l'artiste qui y participe
-        $place = Place::with(['events', 'addresses'])->findOrFail($id);
+        $place = Place::with(['events.active', 'addresses'])->findOrFail($id);
 
         return $place->toJson();
     }
