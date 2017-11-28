@@ -81,7 +81,7 @@ class clientController extends Controller
     public function SimilarEvents($word){
        $places=Place::whereHas('address' , function ($q) use($word){
                $q->where('commune','like','%'.$word.'%');
-       })->get()->load(['events' => function ($query) {
+       })->get()->load(['events.artists' => function ($query) {
            $query->where('end', '>=', Carbon::now()->toDateString());
        }]);
        $places=$places->load('events.place.address');
