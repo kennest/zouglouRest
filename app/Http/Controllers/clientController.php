@@ -84,6 +84,7 @@ class clientController extends Controller
        })->get()->load(['events' => function ($query) {
            $query->where('end', '>=', Carbon::now()->toDateString());
        }]);
+       $places=$places->load('events.place.address');
        return $places->toJson();
     }
 
