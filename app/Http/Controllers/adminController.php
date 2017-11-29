@@ -83,7 +83,7 @@ class adminController extends Controller
         $this->validate($request, [
             'name' => 'required',
             'avatar' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'urlSample' => 'required|file|mimes:mpga|max:1024',
+            'urlSample' => 'required|file|mimes:mpga|max:4096',
         ]);
 
         $artist = new Artist();
