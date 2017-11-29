@@ -74,7 +74,7 @@ class clientController extends Controller
         $places = Place::whereHas('events', function ($query) {
             $query->active();
         })->get();
-        $places->load('events', 'address');
+        $places->load('events.artists', 'address');
         return $places->toJson();
     }
 
