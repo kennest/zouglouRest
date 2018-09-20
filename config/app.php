@@ -167,7 +167,10 @@ return [
         //Barryvdh\Debugbar\ServiceProvider::class,
         Barryvdh\Cors\ServiceProvider::class,
         BC\Laravel\DropboxDriver\ServiceProvider::class,
+<<<<<<< HEAD
         Ejarnutowski\LaravelApiKey\Providers\ApiKeyServiceProvider::class,
+=======
+>>>>>>> 2376cdca3a71aed2c08ddd280375a39ef3348a7d
         /*
          * Package Service Providers...
          */

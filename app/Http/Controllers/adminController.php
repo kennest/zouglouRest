@@ -91,7 +91,6 @@ class adminController extends Controller
 
         //Avatar upload
         $picture = $request->file('avatar');
-
         $avatar = Storage::disk('upload')->putFile($this::AVATAR_DIR, $picture);
 
         //sample upload
@@ -232,7 +231,6 @@ class adminController extends Controller
         $artist->name = $request->input('name');
 
         $encoded=base64_encode(file_get_contents($request->file('avatar')));
-        var_dump($encoded);
 
         //Si les images on ete chargees on upload les nouveaux
         if ($request->file('avatar')) {
@@ -251,7 +249,6 @@ class adminController extends Controller
 
             //sample upload
             $audio = $request->file('urlSample');
-
             $sample = Storage::disk('upload')->putFile($this::SAMPLES_DIR, $audio);
 
             Storage::disk('upload')->delete($oldSample);
