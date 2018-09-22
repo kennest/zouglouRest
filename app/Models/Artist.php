@@ -21,6 +21,11 @@ class Artist extends Model
         return $this->belongsToMany(\App\Models\Event::class);
     }
 
+    public function customers()
+    {
+        return $this->belongsToMany(\App\Models\Customer::class);
+    }
+
     public function getAvatarAttribute($value)
     {
         return $value;

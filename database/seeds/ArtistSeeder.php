@@ -6,7 +6,7 @@ use App\Models\Artist;
 /**
 
  * Created by PhpStorm.
- * User: kyle
+ * Customer: kyle
  * Date: 13/11/17
  * Time: 09:39
  */

@@ -17,7 +17,6 @@ class CreateArtist extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('avatar');
-            $table->blob("picture");
             $table->string('urlsample');
             $table->timestamps();
         });

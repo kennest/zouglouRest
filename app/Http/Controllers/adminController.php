@@ -10,11 +10,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Address;
 use App\Models\Artist;
+use App\Models\Customer;
 use App\Models\Event;
 use App\Models\Place;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Pusher\Pusher;
+use Pusher\PusherException;
 
 
 class adminController extends Controller
@@ -83,7 +85,7 @@ class adminController extends Controller
         $this->validate($request, [
             'name' => 'required',
             'avatar' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'urlSample' => 'required|file|mimes:mpga|max:4096',
+            'urlSample' => 'file|mimes:mpga|max:4096',
         ]);
 
         $artist = new Artist();
@@ -91,12 +93,15 @@ class adminController extends Controller
 
         //Avatar upload
         $picture = $request->file('avatar');
-        $avatar = Storage::disk('upload')->putFile($this::AVATAR_DIR, $picture);
+        if($picture!=null) {
+            $avatar = Storage::disk('upload')->putFile($this::AVATAR_DIR, $picture);
+        }
 
         //sample upload
         $audio = $request->file('urlSample');
-
-        $sample = Storage::disk('upload')->putFile($this::SAMPLES_DIR, $audio);
+        if($audio!=null) {
+            $sample = Storage::disk('upload')->putFile($this::SAMPLES_DIR, $audio);
+        }
 
         $artist->avatar = $avatar;
         $artist->urlsample = $sample;
@@ -171,16 +176,74 @@ class adminController extends Controller
         //Synchronisation avec les IDs d'artistes
         $event->artists()->sync($artists);
 
+        //INIT PUSHER
+        $options = array(
+            'cluster' => 'eu',
+            'useTLS' => true
+        );
+        try {
+            $pusher = new Pusher(
+                '414e2fd5843af1c2865d',
+                'd513bf2f8c10140dee2e',
+                '595445',
+                $options
+            );
+            $data['message'] = json_encode($event);
+            $pusher->trigger('zouglou', 'event-added', $data);
+        } catch (PusherException $e) {
+            return response()->json($e);
+        }
+
         return redirect()->route('admin.index');
     }
 
     //PERMET D'AJOUTER UN AUTRE EVENEMENT
     public function addOtherEvent(Request $request){
-        dd(json_decode($request->getContent(), true));
+        dd($request->json()->all());
         $data =  $request->json()->all();
         return $data;
     }
 
+    //AJOUTE L'ARTISTE AU FAVORIS
+    public function addFavoriteArtist(Request $request){
+        $customer=Customer::find($request->json("customer_id"));
+        $artist=Artist::find($request->json("artist_id"));
+        if($customer!=null && $artist!=null) {
+            $customer->artists()->sync($artist->id);
+        }
+        return $request->json()->all();
+    }
+
+    //AJOUTE LA PLACE AU FAVORIS
+    public function addFavoritePlace(Request $request){
+        $customer=Customer::find($request->json("customer_id"));
+        $place=Place::find($request->json("place_id"));
+        if($customer!=null && $place!=null) {
+            $customer->places()->sync($place->id);
+        }
+        return $request->json()->all();
+    }
+
+    public function addCustomer(Request $request){
+        $customer=new Customer();
+        $customer->email=$request->json("email");
+        $customer->name=$request->json("name");
+        $customer->fb_id=$request->json("fb_id");
+        $customer->picture=$request->json("picture");
+        $customer->token=$request->json("token");
+
+        $old=Customer::where("fb_id","=",$customer->fb_id)->get();
+        if($old==null) {
+            if ($customer->save()) {
+                $reponse = "success";
+            } else {
+                $reponse = "error";
+            }
+        }else{
+            $reponse="user-exist";
+        }
+        return response()->json($reponse);
+    }
     //********************************************SELECTION***************************************************************//
 
     //PERMET DE SELECTIONNER UN ARTIST
@@ -229,8 +292,6 @@ class adminController extends Controller
         $id = $request->input('id');
         $artist = Artist::find($id);
         $artist->name = $request->input('name');
-
-        $encoded=base64_encode(file_get_contents($request->file('avatar')));
 
         //Si les images on ete chargees on upload les nouveaux
         if ($request->file('avatar')) {

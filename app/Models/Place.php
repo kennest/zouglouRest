@@ -13,11 +13,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Place extends Model
 {
-    protected $fillable = ['title','picture'];
+    protected $fillable = ['id','title','picture'];
 
     public function events()
     {
         return $this->hasMany(\App\Models\Event::class);
+    }
+
+    public function customers()
+    {
+        return $this->belongsToMany(\App\Models\Customer::class)->withPivot('customer_id');
     }
 
     public function address(){

@@ -8,6 +8,7 @@
         "php": ">=7.0.0",
         "barryvdh/laravel-cors": "^0.10.0",
         "barryvdh/laravel-debugbar": "^3.1",
+        "barryvdh/laravel-ide-helper": "^2.5",
         "benjamincrozat/laravel-dropbox-driver": "^2.0",
         "doctrine/dbal": "^2.8",
         "ejarnutowski/laravel-api-key": "^1.0",

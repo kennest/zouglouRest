@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Artist;
+use App\Models\Customer;
 use App\Models\Event;
 use App\Models\Place;
 use Carbon\Carbon;
@@ -47,6 +48,11 @@ class clientController extends Controller
         //$artists->toJson();
 	return response()->json(["artists"=>$artists]);
     }
+
+public function getCustumerData($fb_id){
+        $customer=Customer::where('fb_id','=',$fb_id)->with('artists','places')->get();
+        return response()->json($customer);
+}
 
 
     //PERMET DE SELECTIONNER TOUS LES EVENEMENTS ACTIFS

@@ -26,6 +26,7 @@ Route::get('/delevent/{id?}', ['as'=>'event.delete','uses'=>'adminController@del
 
 //AJOUT ET MISE A JOUR
 Route::post('/addartist', ['as'=>'artist.add','before' => 'csrf','uses'=>'adminController@addArtist']);
+
 Route::post('/addplace', ['as'=>'place.add','before' => 'csrf','uses'=>'adminController@addPlace']);
 Route::post('/addevent', ['as'=>'event.add','before' => 'csrf','uses'=>'adminController@addEvent']);
 Route::post('/addotherevent', ['as'=>'otherevent.add','before' => 'csrf','uses'=>'adminController@addOtherEvent']);
@@ -39,11 +40,17 @@ Route::group(['prefix' => 'api'], function ($route) {
     $route->get('/places',['uses'=>'clientController@PlacesWithActiveEvents']);
     $route->get('/artists',['uses'=>'clientController@ArtistsWithEvents']);
 
+    $route->get('/customer/{fb_id?}', ['uses'=>'clientController@getCustumerData']);
+    $route->post('/favoriteartist', ['uses'=>'adminController@addFavoriteArtist']);
+
+    $route->post('/favoriteplace', ['uses'=>'adminController@addFavoritePlace']);
+
+    $route->post('/addcustomer', ['uses'=>'adminController@addCustomer']);
+
     $route->get('/activeevents',['uses'=>'clientController@allActiveEvents']);
     $route->get('/inactiveevents',['uses'=>'clientController@allInactiveEvents']);
     $route->get('/placeshistory',['uses'=>'clientController@PlacesWithEvents']);
     $route->get('/similar/{word}',['uses'=>'clientController@SimilarEvents']);
-
 
     $route->get('/artist/{id}',['uses'=>'clientController@getArtist']);
     $route->get('/place/{id}',['uses'=>'clientController@getPlace']);
